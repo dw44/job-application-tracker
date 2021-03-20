@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const jobSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -12,4 +12,4 @@ const jobSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Job', jobSchema);
+module.exports = mongoose.model('Job', categorySchema);

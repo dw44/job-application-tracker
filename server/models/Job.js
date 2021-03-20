@@ -31,6 +31,11 @@ const jobSchema = new mongoose.Schema({
   },
   link: String,
   notes: String,
+  user: mongoose.Schema.Types.ObjectId,
+  markedTrash: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Job', jobSchema);
