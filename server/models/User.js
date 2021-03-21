@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
+// uniqueValidator added to validate username field
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -14,7 +16,12 @@ const userSchema = new mongoose.Schema({
     maxLength: 100,
   },
   username: {
-
+    type: String,
+    required: true,
+  },
+  passwordHash: {
+    type: String,
+    required: true,
   },
   jobs: {
     type: [mongoose.Schema.Types.ObjectId],
@@ -22,4 +29,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Job', userSchema);
+userSchema.plugin(uniqueValidator);
+
+module.exports = mongoose.model('User', userSchema);
