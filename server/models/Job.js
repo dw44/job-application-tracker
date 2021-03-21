@@ -24,6 +24,7 @@ const jobSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
+    default: 1,
     // 1 - Applied; 2 - Interview(ing); 3 - Rejected; 4 - Ghosted; 5 - Accepted
   },
   categories: {
@@ -31,10 +32,14 @@ const jobSchema = new mongoose.Schema({
   },
   link: String,
   notes: String,
-  user: mongoose.Schema.Types.ObjectId,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   markedTrash: {
     type: Boolean,
     required: true,
+    default: false,
   },
 });
 

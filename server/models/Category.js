@@ -9,6 +9,7 @@ const categorySchema = new mongoose.Schema({
   },
   jobs: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
   },
 });
 

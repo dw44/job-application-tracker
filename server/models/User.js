@@ -13,8 +13,12 @@ const userSchema = new mongoose.Schema({
     minLength: 3,
     maxLength: 100,
   },
+  username: {
+
+  },
   jobs: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
   },
 });
 
