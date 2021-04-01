@@ -1,5 +1,6 @@
 const jobs = [
   {
+    id: '1',
     title: 'President of the United States',
     city: 'Brasilia',
     company: 'Citibank',
@@ -9,6 +10,7 @@ const jobs = [
     link: 'https://www.citibank.com',
   },
   {
+    id: '2',
     title: 'CTO',
     city: 'Bay Area',
     company: 'Google',
@@ -18,6 +20,7 @@ const jobs = [
     link: 'https://www.google.com',
   },
   {
+    id: '3',
     title: 'CFO',
     city: 'NYC',
     company: 'NYT',
@@ -35,5 +38,24 @@ jobsRouter.get('/', (request, response) => response.status(200).json({
   status: 'Success',
   jobs,
 }));
+
+jobsRouter.get('/:id', (request, response) => {
+  const { id } = request.params;
+  const entry = jobs.filter((job) => job.id === id);
+
+  if (entry.length) {
+    return response.status(200).json({
+      statusCode: '200',
+      status: 'Success',
+      entry: entry[0],
+    });
+  }
+
+  return response.status(404).json({
+    statusCode: 404,
+    status: 'Error',
+    message: 'Not Found',
+  });
+});
 
 module.exports = jobsRouter;
