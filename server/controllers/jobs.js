@@ -58,4 +58,14 @@ jobsRouter.get('/:id', (request, response) => {
   });
 });
 
+jobsRouter.post('/', (request, response) => {
+  const job = request.body;
+  jobs.push(job);
+  response.status(200).json({
+    statusCode: 200,
+    status: 'Success',
+    job,
+  });
+});
+
 module.exports = jobsRouter;

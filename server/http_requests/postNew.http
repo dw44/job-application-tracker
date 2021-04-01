@@ -1,0 +1,13 @@
+POST http://localhost:4000/api/v1/jobs
+Content-Type: application/json
+
+{
+    "id": "4",
+    "title": "Merchandiser",
+    "city": "Toronto",
+    "company": "SDM",
+    "dateApplied": "Thu Apr 01 2021",
+    "status": "1",
+    "categories": ["Professional", "Full Time"],
+    "link": "https://www.citibank.com"
+}
