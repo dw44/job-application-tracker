@@ -29,13 +29,15 @@ const jobSchema = new mongoose.Schema({
   },
   categories: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
   },
   link: String,
   notes: String,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
+  // #TODO : ADD user later
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   required: true,
+  // },
   markedTrash: {
     type: Boolean,
     required: true,

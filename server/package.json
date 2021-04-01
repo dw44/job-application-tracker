@@ -4,8 +4,8 @@
   "description": "Backend for app to track my job applications",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index"
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "author": "Tenz",
   "license": "MIT",
