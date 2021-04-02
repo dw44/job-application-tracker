@@ -1,43 +1,14 @@
-const jobs = [
-  {
-    id: '1',
-    title: 'President of the United States',
-    city: 'Brasilia',
-    company: 'Citibank',
-    dateApplied: new Date().toDateString(),
-    status: 1,
-    categories: ['Professional', 'Full Time'],
-    link: 'https://www.citibank.com',
-  },
-  {
-    id: '2',
-    title: 'CTO',
-    city: 'Bay Area',
-    company: 'Google',
-    dateApplied: new Date().toDateString(),
-    status: 5,
-    categories: ['Professional', 'Full Time'],
-    link: 'https://www.google.com',
-  },
-  {
-    id: '3',
-    title: 'CFO',
-    city: 'NYC',
-    company: 'NYT',
-    dateApplied: new Date().toDateString(),
-    status: 2,
-    categories: ['Part Time'],
-    link: 'https://www.nyt.com',
-  },
-];
-
 const jobsRouter = require('express').Router();
+const Job = require('../models/Job');
 
-jobsRouter.get('/', (request, response) => response.status(200).json({
-  statusCode: 200,
-  status: 'Success',
-  jobs,
-}));
+jobsRouter.get('/', async (request, response) => {
+  const jobs = await Job.find({});
+  response.json({
+    statusCode: 200,
+    status: 'Success',
+    jobs,
+  });
+});
 
 jobsRouter.get('/:id', (request, response) => {
   const { id } = request.params;
@@ -58,14 +29,37 @@ jobsRouter.get('/:id', (request, response) => {
   });
 });
 
-jobsRouter.post('/', (request, response) => {
-  const job = request.body;
-  jobs.push(job);
-  response.status(200).json({
-    statusCode: 200,
+// updated to post to db
+jobsRouter.post('/', async (request, response) => {
+  const { body } = request;
+  // prevents submission going through without required fields
+  if (!body.title || !body.city || !body.company) {
+    return response.status(400).json({
+      statusCode: 400,
+      status: 'Failure',
+    });
+  }
+  // #TODO - Handle date through a library
+  const job = new Job({
+    title: body.title,
+    city: body.city,
+    company: body.company,
+    link: body.link,
+    notes: body.notes,
+  });
+
+  const savedJob = await job.save();
+  console.log(savedJob);
+  response.status(201).json({
+    statusCode: '201',
     status: 'Success',
-    job,
+    job: savedJob,
   });
 });
+
+jobsRouter.delete('/:id', (request, response) => response.status(204).json({
+  statusCode: 204,
+  status: 'Success',
+}));
 
 module.exports = jobsRouter;

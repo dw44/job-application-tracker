@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// #TODO - Handle date through a library
 const jobSchema = new mongoose.Schema({
   title: {
     type: String,
