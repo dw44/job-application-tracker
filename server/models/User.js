@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema({
     minLength: 3,
     maxLength: 100,
   },
+  secretQuestion: {
+    type: String,
+    required: true,
+    minLength: 10,
+    maxLength: 100,
+  },
+  secretAnswer: {
+    type: String,
+    required: true,
+    minLength: 10,
+    maxLength: 100,
+  },
   username: {
     type: String,
     required: true,

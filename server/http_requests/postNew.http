@@ -2,9 +2,9 @@ POST http://localhost:4000/api/v1/jobs
 Content-Type: application/json
 
 {
-    "title": "Pharmacy Assistant",
     "city": "Toronto",
-    "company": "SDM",
-    "link": "https://www.sdm.com",
-    "notes": "N/A"
+    "company": "IBM",
+    "link": "https://www.ibm.ca",
+    "notes": "N/A",
+    "status": 2
 }

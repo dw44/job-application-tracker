@@ -46,10 +46,11 @@ jobsRouter.post('/', async (request, response) => {
     company: body.company,
     link: body.link,
     notes: body.notes,
+    status: body.status || 1,
   });
 
   const savedJob = await job.save();
-  console.log(savedJob);
+  console.log(savedJob._id.toString());
   response.status(201).json({
     statusCode: '201',
     status: 'Success',
