@@ -14,6 +14,7 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const { body } = request;
 
+  // return error if any fields are missing. Can't have missing fields here
   if (!body.username
       || !body.password
       || !body.firstName
@@ -25,7 +26,10 @@ usersRouter.post('/', async (request, response) => {
       status: 'Error',
       message: 'All fields are mandatory',
     });
-  } else if (body.password.length < 3) {
+  }
+
+  if (body.password.length < 3) {
+    // Can't have short password
     response.status(400).json({
       statusCode: 400,
       status: 'Error',
@@ -33,8 +37,19 @@ usersRouter.post('/', async (request, response) => {
     });
   }
 
+  // making sure that a preexisting username can't be registered again
+  const preExisting = await User.find({ username: body.username });
+  if (preExisting.length) {
+    response.status(400).json({
+      statusCode: 400,
+      status: 'Error',
+      message: 'Username Taken',
+    });
+  }
+
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(body.password, saltRounds);
+  // secret answer changed to hash from initially being stored in db as text
   const secretAnswerHash = await bcrypt.hash(body.secretAnswer, saltRounds);
 
   const user = new User({
@@ -50,5 +65,7 @@ usersRouter.post('/', async (request, response) => {
 
   response.json(savedUser);
 });
+
+// #TODO: Implement delete functionality after auth
 
 module.exports = usersRouter;
