@@ -16,16 +16,14 @@ const userSchema = new mongoose.Schema({
     maxLength: 100,
   },
   secretQuestion: {
+    // hardcode questions in frontend
     type: String,
     required: true,
-    minLength: 10,
     maxLength: 100,
   },
-  secretAnswer: {
+  secretAnswerHash: {
     type: String,
     required: true,
-    minLength: 10,
-    maxLength: 100,
   },
   username: {
     type: String,

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const jobsRouter = require('./controllers/jobs');
+const usersRouter = require('./controllers/users');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api/v1/jobs', jobsRouter);
+app.use('/api/v1/users', usersRouter);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true,

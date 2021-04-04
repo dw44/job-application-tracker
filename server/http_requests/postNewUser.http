@@ -1,0 +1,11 @@
+POST http://localhost:4000/api/v1/users
+Content-Type: application/json
+
+{
+    "firstName": "Tanzeel",
+    "lastName": "ur Rehman",
+    "username": "tanzeel",
+    "secretQuestion": "What's my name?",
+    "secretAnswer": "Snoop Doggy Dogg",
+    "password": "qweasdzxc"
+}
