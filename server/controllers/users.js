@@ -13,6 +13,7 @@ usersRouter.get('/', async (request, response) => {
 
 usersRouter.post('/', async (request, response) => {
   const { body } = request;
+  // responses returned to avoid needless if-else nesting
 
   // return error if any fields are missing. Can't have missing fields here
   if (!body.username
@@ -21,7 +22,7 @@ usersRouter.post('/', async (request, response) => {
       || !body.lastName
       || !body.secretQuestion
       || !body.secretAnswer) {
-    response.status(400).json({
+    return response.status(400).json({
       statusCode: 400,
       status: 'Error',
       message: 'All fields are mandatory',
@@ -30,7 +31,7 @@ usersRouter.post('/', async (request, response) => {
 
   if (body.password.length < 3) {
     // Can't have short password
-    response.status(400).json({
+    return response.status(400).json({
       statusCode: 400,
       status: 'Error',
       message: 'Password must be at least 3 characters long',
@@ -40,7 +41,7 @@ usersRouter.post('/', async (request, response) => {
   // making sure that a preexisting username can't be registered again
   const preExisting = await User.find({ username: body.username });
   if (preExisting.length) {
-    response.status(400).json({
+    return response.status(400).json({
       statusCode: 400,
       status: 'Error',
       message: 'Username Taken',
@@ -63,9 +64,14 @@ usersRouter.post('/', async (request, response) => {
 
   const savedUser = await user.save();
 
-  response.json(savedUser);
+  return response.json({
+    statusCode: 200,
+    status: 'User successfully created',
+    user: savedUser,
+  });
 });
 
+// #TODO: Implement change password functionality after auth
 // #TODO: Implement delete functionality after auth
 
 module.exports = usersRouter;
