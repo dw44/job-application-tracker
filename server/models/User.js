@@ -3,17 +3,19 @@ const uniqueValidator = require('mongoose-unique-validator');
 // uniqueValidator added to validate username field
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     required: true,
     minLength: 3,
     maxLength: 100,
   },
-  lastName: {
+  username: {
     type: String,
     required: true,
-    minLength: 3,
-    maxLength: 100,
+  },
+  passwordHash: {
+    type: String,
+    required: true,
   },
   secretQuestion: {
     // hardcode questions in frontend
@@ -22,14 +24,6 @@ const userSchema = new mongoose.Schema({
     maxLength: 100,
   },
   secretAnswerHash: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  passwordHash: {
     type: String,
     required: true,
   },
