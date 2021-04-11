@@ -18,8 +18,7 @@ usersRouter.post('/', async (request, response) => {
   // return error if any fields are missing. Can't have missing fields here
   if (!body.username
       || !body.password
-      || !body.firstName
-      || !body.lastName
+      || !body.name
       || !body.secretQuestion
       || !body.secretAnswer) {
     return response.status(400).json({
@@ -48,7 +47,7 @@ usersRouter.post('/', async (request, response) => {
     });
   }
 
-  const saltRounds = 10;
+  const saltRounds = 12;
   const passwordHash = await bcrypt.hash(body.password, saltRounds);
   // secret answer changed to hash from initially being stored in db as text
   const secretAnswerHash = await bcrypt.hash(body.secretAnswer, saltRounds);
