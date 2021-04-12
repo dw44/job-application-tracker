@@ -1,45 +1,41 @@
 const jobsRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+
 const Job = require('../models/Job');
+const User = require('../models/User');
 
-jobsRouter.get('/', async (request, response) => {
-  const jobs = await Job.find({});
-  response.json({
-    statusCode: 200,
-    status: 'Success',
-    jobs,
-  });
-});
-
-jobsRouter.get('/:id', (request, response) => {
-  const { id } = request.params;
-  const entry = jobs.filter((job) => job.id === id);
-
-  if (entry.length) {
-    return response.status(200).json({
-      statusCode: '200',
-      status: 'Success',
-      entry: entry[0],
-    });
+const getTokenFrom = (request) => {
+  // extract jwt from request header
+  const authorization = request.get('authorization');
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7);
   }
 
-  return response.status(404).json({
-    statusCode: 404,
-    status: 'Error',
-    message: 'Not Found',
-  });
-});
+  return null;
+};
 
-// updated to post to db
 jobsRouter.post('/', async (request, response) => {
   const { body } = request;
-  // prevents submission going through without required fields
+  const token = getTokenFrom(request);
+  console.log(token);
   if (!body.title || !body.city || !body.company) {
     return response.status(400).json({
       statusCode: 400,
       status: 'Failure',
     });
   }
-  // #TODO - Handle date through a library
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      message: 'Invalid or missing token',
+    });
+  }
+
+  const user = await User.findById(decodedToken.id);
+
   const job = new Job({
     title: body.title,
     city: body.city,
@@ -50,17 +46,14 @@ jobsRouter.post('/', async (request, response) => {
   });
 
   const savedJob = await job.save();
-  console.log(savedJob._id.toString());
+  user.jobs = user.jobs.concat(savedJob._id);
+  await user.save();
+
   response.status(201).json({
-    statusCode: '201',
+    statusCode: 201,
     status: 'Success',
-    job: savedJob,
+    savedJob,
   });
 });
-
-jobsRouter.delete('/:id', (request, response) => response.status(204).json({
-  statusCode: 204,
-  status: 'Success',
-}));
 
 module.exports = jobsRouter;
