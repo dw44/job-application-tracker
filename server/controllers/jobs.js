@@ -17,7 +17,7 @@ const getTokenFrom = (request) => {
 jobsRouter.post('/', async (request, response) => {
   const { body } = request;
   const token = getTokenFrom(request);
-  console.log(token);
+
   if (!body.title || !body.city || !body.company) {
     return response.status(400).json({
       statusCode: 400,
@@ -25,6 +25,7 @@ jobsRouter.post('/', async (request, response) => {
     });
   }
 
+  // don't authorize if valid token not provided
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   if (!token || !decodedToken.id) {
     return response.status(401).json({
@@ -42,6 +43,7 @@ jobsRouter.post('/', async (request, response) => {
     company: body.company,
     link: body.link,
     notes: body.notes,
+    user: user._id,
     status: body.status || 1,
   });
 

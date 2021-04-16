@@ -35,10 +35,10 @@ const jobSchema = new mongoose.Schema({
   link: String,
   notes: String,
   // #TODO : ADD user later
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   required: true,
-  // },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   markedTrash: {
     type: Boolean,
     required: true,
