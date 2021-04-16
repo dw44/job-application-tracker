@@ -1,12 +1,12 @@
 POST http://localhost:4000/api/v1/jobs
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF4ZSIsIm5hbWUiOiJNb2d1bCBLaGFuIiwiaWQiOiI2MDc0ZGJmNGQ4ZDM5MzFiY2U5MzE1ZGYiLCJpYXQiOjE2MTg2MTM5NTksImV4cCI6MTYxODYxNzU1OX0.HI-UeNU1C4blgPaucdweqEYi6GZDBB_L8s0nl3irjfg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxlc2hyYWMiLCJuYW1lIjoiTGVzaHJhYyIsImlkIjoiNjA3YTIzOWY4ZjIyY2QxYWJhNTRkYjM4IiwiaWF0IjoxNjE4NjE3MjYwLCJleHAiOjE2MTg2MjA4NjB9.GDPusWHg57jP467FKQSTLr-Cn3mBi-zcKuM-0T33Qmc
 Content-Type: application/json
 
 {
-    "title": "CEO",
+    "title": "Owner",
     "city": "Toronto",
-    "company": "Acme Corporation",
-    "link": "https://www.acme.ca",
+    "company": "Dota Corporation",
+    "link": "https://www.dota.ca",
     "notes": "N/A",
     "status": 1
 }
