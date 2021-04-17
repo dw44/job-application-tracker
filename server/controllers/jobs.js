@@ -14,6 +14,19 @@ const getTokenFrom = (request) => {
   return null;
 };
 
+// returns true if token is valid, false otherwise
+const verifyToken = (token) => {
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  if (!token || !decodedToken.id) {
+    return false;
+  }
+
+  return decodedToken;
+};
+
+// NO DELETE FUNCTIONALITY THROUGH SERVER - CAN ONLY BE DELETED DIRECTLY FROM DB
+
+// ==========
 // add new job. needs auth
 jobsRouter.post('/', async (request, response) => {
   const { body } = request;
@@ -28,8 +41,8 @@ jobsRouter.post('/', async (request, response) => {
   }
 
   // don't authorize if valid token not provided
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  if (!token || !decodedToken.id) {
+  const verifiedToken = verifyToken(token);
+  if (verifiedToken) {
     return response.status(401).json({
       statusCode: 401,
       status: 'Unauthorized',
@@ -38,7 +51,7 @@ jobsRouter.post('/', async (request, response) => {
   }
 
   // get user id from jwt
-  const user = await User.findById(decodedToken.id);
+  const user = await User.findById(verifiedToken.id);
 
   const job = new Job({
     title: body.title,
@@ -62,14 +75,15 @@ jobsRouter.post('/', async (request, response) => {
   });
 });
 
+// ==========
 // retrieve jobs. Only retrieves jobs for logged in user
 jobsRouter.get('/', async (request, response) => {
   // protected route. needs auth
   const token = getTokenFrom(request);
 
   // don't authorize if valid token not provided
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  if (!token || !decodedToken.id) {
+  const verifiedToken = verifyToken(token);
+  if (!verifiedToken) {
     return response.status(401).json({
       statusCode: 401,
       status: 'Unauthorized',
@@ -77,8 +91,8 @@ jobsRouter.get('/', async (request, response) => {
     });
   }
 
-  // auth passed. get userz
-  const user = await User.findById(decodedToken.id);
+  // auth passed. get user, and only the jobs created by the user
+  const user = await User.findById(verifiedToken.id);
   const jobs = await Job.find({ user: user._id });
 
   response.status(201).json({
@@ -86,6 +100,12 @@ jobsRouter.get('/', async (request, response) => {
     status: 'Success',
     jobs,
   });
+});
+
+// ==========
+// edit job. Requires authorization.
+jobsRouter.put('/:id', async (request, response) => {
+  // TBD
 });
 
 module.exports = jobsRouter;
