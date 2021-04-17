@@ -25,6 +25,7 @@ const verifyToken = (token) => {
 };
 
 // NO DELETE FUNCTIONALITY THROUGH SERVER - CAN ONLY BE DELETED DIRECTLY FROM DB
+// Delete functionality simulated by manipulating "markedTrash" property on
 
 // ==========
 // add new job. needs auth
@@ -105,7 +106,45 @@ jobsRouter.get('/', async (request, response) => {
 // ==========
 // edit job. Requires authorization.
 jobsRouter.put('/:id', async (request, response) => {
-  // TBD
+  const { body } = request;
+
+  // token auth
+  const token = getTokenFrom(request);
+  const verifiedToken = verifyToken(token);
+  if (!verifiedToken) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      message: 'Invalid or missing token',
+    });
+  }
+
+  const job = await Job.findById(request.params.id);
+
+  if (!job) {
+    response.status(404).json({
+      statusCode: 404,
+      status: 'Not found',
+      message: 'Job application not found',
+    });
+  }
+
+  if (job.user.toString() !== verifiedToken.id) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unathorized',
+      message: 'User not authorized to edit this joba',
+    });
+  }
+
+  const updatedJob = {
+    title: body.title,
+    city: body.city,
+    company: body.company,
+    link: body.link,
+    notes: body.notes,
+    status: body.status || 1,
+  };
 });
 
 module.exports = jobsRouter;

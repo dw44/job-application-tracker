@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
   jobs: {
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
+    ref: 'Job',
   },
 });
 

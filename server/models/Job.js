@@ -31,6 +31,7 @@ const jobSchema = new mongoose.Schema({
   tags: {
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
+    ref: 'Tag',
   },
   link: String,
   notes: String,
@@ -38,6 +39,7 @@ const jobSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: 'User',
   },
   markedTrash: {
     type: Boolean,
