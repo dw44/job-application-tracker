@@ -28,11 +28,6 @@ const jobSchema = new mongoose.Schema({
     default: 1,
     // 1 - Applied; 2 - Interview(ing); 3 - Rejected; 4 - Ghosted; 5 - Accepted
   },
-  tags: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-    ref: 'Tag',
-  },
   link: String,
   notes: String,
   // #TODO : ADD user later

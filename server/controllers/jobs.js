@@ -28,6 +28,33 @@ const verifyToken = (token) => {
 // Delete functionality simulated by manipulating "markedTrash" property on
 
 // ==========
+// retrieve jobs. Only retrieves jobs for logged in user
+jobsRouter.get('/', async (request, response) => {
+  // protected route. needs auth
+  const token = getTokenFrom(request);
+
+  // don't authorize if valid token not provided
+  const verifiedToken = verifyToken(token);
+  if (!verifiedToken) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      message: 'Invalid or missing token',
+    });
+  }
+
+  // auth passed. get user, and only the jobs created by the user
+  const user = await User.findById(verifiedToken.id);
+  const jobs = await Job.find({ user: user._id });
+
+  response.status(201).json({
+    statusCode: 201,
+    status: 'Success',
+    jobs,
+  });
+});
+
+// ==========
 // add new job. needs auth
 jobsRouter.post('/', async (request, response) => {
   const { body } = request;
@@ -77,37 +104,10 @@ jobsRouter.post('/', async (request, response) => {
 });
 
 // ==========
-// retrieve jobs. Only retrieves jobs for logged in user
-jobsRouter.get('/', async (request, response) => {
-  // protected route. needs auth
-  const token = getTokenFrom(request);
-
-  // don't authorize if valid token not provided
-  const verifiedToken = verifyToken(token);
-  if (!verifiedToken) {
-    return response.status(401).json({
-      statusCode: 401,
-      status: 'Unauthorized',
-      message: 'Invalid or missing token',
-    });
-  }
-
-  // auth passed. get user, and only the jobs created by the user
-  const user = await User.findById(verifiedToken.id);
-  const jobs = await Job.find({ user: user._id });
-
-  response.status(201).json({
-    statusCode: 201,
-    status: 'Success',
-    jobs,
-  });
-});
-
-// ==========
 // edit job. Requires authorization.
 jobsRouter.put('/:id', async (request, response) => {
   const { body } = request;
-
+  const { id } = request.params;
   // token auth
   const token = getTokenFrom(request);
   const verifiedToken = verifyToken(token);
@@ -119,7 +119,7 @@ jobsRouter.put('/:id', async (request, response) => {
     });
   }
 
-  const job = await Job.findById(request.params.id);
+  const job = await Job.findById(id);
 
   if (!job) {
     response.status(404).json({
@@ -133,18 +133,28 @@ jobsRouter.put('/:id', async (request, response) => {
     return response.status(401).json({
       statusCode: 401,
       status: 'Unathorized',
-      message: 'User not authorized to edit this joba',
+      message: 'User not authorized to edit this job',
     });
   }
 
-  const updatedJob = {
+  // reminder: send all values with req. don't use values from job fetched from db
+  const newJob = {
     title: body.title,
     city: body.city,
+    markedTrash: body.markedTrash,
     company: body.company,
     link: body.link,
     notes: body.notes,
-    status: body.status || 1,
+    status: body.status,
   };
+
+  const updatedJob = await Job.findByIdAndUpdate(id, newJob, { new: true });
+
+  response.status(202).json({
+    statusCode: 202,
+    status: 'Accepted',
+    updatedJob,
+  });
 });
 
 module.exports = jobsRouter;
