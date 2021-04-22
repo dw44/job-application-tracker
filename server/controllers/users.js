@@ -69,6 +69,51 @@ usersRouter.post('/', async (request, response) => {
   });
 });
 
+// Change password functionality -> Multiple routes
+usersRouter.get('/forgot_password', async (request, response) => {
+  // return error if no username provided with request
+  if (!request.body.username) {
+    return response.status(400).json({
+      statusCode: 400,
+      status: 'Bad Request',
+      message: 'No username provided',
+    });
+  }
+
+  const user = await User.find({ username: request.body.username.trim() });
+
+  // returns empty array if no result
+  if (!user.length) {
+    return response.status(404).json({
+      statusCode: 404,
+      status: 'Not Found',
+      message: 'User not found',
+    });
+  }
+
+  // return user id with succesful request to search for user in next request in chain
+  response.status(200).json({
+    statusCode: 200,
+    status: 'User found',
+    message: 'Success',
+    user: user[0]._id,
+  });
+});
+
+// step 2 of changing password via secret question
+usersRouter.put('/:id', async (request, response) => {
+  const user = await User.findById(request.params.id);
+
+  // returns empty array if no result
+  if (!user.length) {
+    return response.status(404).json({
+      statusCode: 404,
+      status: 'Not Found',
+      message: 'User not found',
+    });
+  }
+});
+
 // #TODO: Implement change password functionality after auth
 // #TODO: Implement delete functionality after auth
 
