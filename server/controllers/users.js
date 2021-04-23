@@ -91,30 +91,39 @@ usersRouter.get('/forgot_password', async (request, response) => {
     });
   }
 
-  // return user id with succesful request to search for user in next request in chain
+  /* return user id with succesful request to search for user
+  in next request in chain. pass secret question to next step
+  from here to avoid unnecessary fetch requests in next step */
+
   response.status(200).json({
     statusCode: 200,
     status: 'User found',
     message: 'Success',
     user: user[0]._id,
+    question: user[0].secretQuestion,
   });
 });
 
-// step 2 of changing password via secret question
+// step 2 of changing password via secret question. s
 usersRouter.put('/:id', async (request, response) => {
-  const user = await User.findById(request.params.id);
+  const { secretAnswer } = request.body;
 
+  const user = await User.findById(request.params.id);
+  console.log(user.secretAnswerHash);
   // returns empty array if no result
-  if (!user.length) {
+  if (!user) {
     return response.status(404).json({
       statusCode: 404,
       status: 'Not Found',
       message: 'User not found',
     });
   }
+
+  // compare secret answers
+  const correctAnswer = await bcrypt.compare(secretAnswer, user.secretAnswerHash);
+  return response.json(correctAnswer);
 });
 
 // #TODO: Implement change password functionality after auth
-// #TODO: Implement delete functionality after auth
 
 module.exports = usersRouter;
