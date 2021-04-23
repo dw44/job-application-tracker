@@ -106,10 +106,10 @@ usersRouter.get('/forgot_password', async (request, response) => {
 
 // step 2 of changing password via secret question. s
 usersRouter.put('/:id', async (request, response) => {
-  const { secretAnswer } = request.body;
+  const { secretAnswer, newPassword } = request.body;
 
   const user = await User.findById(request.params.id);
-  console.log(user.secretAnswerHash);
+
   // returns empty array if no result
   if (!user) {
     return response.status(404).json({
@@ -121,7 +121,24 @@ usersRouter.put('/:id', async (request, response) => {
 
   // compare secret answers
   const correctAnswer = await bcrypt.compare(secretAnswer, user.secretAnswerHash);
-  return response.json(correctAnswer);
+
+  if (!correctAnswer) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      message: 'Incorrect secret answer',
+    });
+  }
+  const saltRounds = 12;
+  const newHash = await bcrypt.hash(newPassword, saltRounds);
+
+  await User.findByIdAndUpdate(request.params.id, { passwordHash: newHash }, { new: true });
+
+  return response.status(202).json({
+    statusCode: 202,
+    status: 'Accepted',
+    message: 'Password updated',
+  });
 });
 
 // #TODO: Implement change password functionality after auth
