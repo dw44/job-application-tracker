@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 
 const morgan = require('morgan');
 
+const errorHandler = require('./middleware/errorHandler');
+
 const app = express();
 
 app.use(cors());
@@ -16,6 +18,8 @@ app.use('/api/v1/jobs', require('./controllers/jobs'));
 app.use('/api/v1/users', require('./controllers/users'));
 
 app.use('/api/v1/login', require('./controllers/login'));
+
+app.use(errorHandler);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true,
