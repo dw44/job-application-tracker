@@ -1,5 +1,6 @@
 const usersRouter = require('express').Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 usersRouter.get('/', async (request, response) => {
@@ -104,7 +105,7 @@ usersRouter.get('/forgot_password', async (request, response) => {
   });
 });
 
-// step 2 of changing password via secret question. s
+// step 2 of changing password via secret question.
 usersRouter.put('/:id', async (request, response) => {
   const { secretAnswer, newPassword } = request.body;
 
@@ -141,6 +142,42 @@ usersRouter.put('/:id', async (request, response) => {
   });
 });
 
-// #TODO: Implement change password functionality after auth
+// change password functionality for authenticated users
+// uses old and new password
+usersRouter.put('/', async (request, response) => {
+  const { newPassword } = request.body;
+
+  const authorization = request.get('authorization');
+  let token = null;
+
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    token = authorization.substring(7);
+  }
+
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      message: 'Invalid or missing token',
+    });
+  }
+
+  const saltRounds = 12;
+  const newHash = await bcrypt.hash(newPassword, saltRounds);
+  const updatedUser = await User.findByIdAndUpdate(
+    decodedToken.id,
+    { passwordHash: newHash },
+    { new: true },
+  );
+
+  return response.status(202).json({
+    statusCode: 202,
+    status: 'Accepted',
+    message: 'Password updated',
+    updatedUser,
+  });
+});
 
 module.exports = usersRouter;
