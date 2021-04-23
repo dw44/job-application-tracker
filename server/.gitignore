@@ -3,3 +3,9 @@
 
 # environment variables
 .env
+
+# project to do list
+/TDL.md
+
+# api route tests
+/http_requests
