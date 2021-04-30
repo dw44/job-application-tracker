@@ -1,7 +1,13 @@
-.App {
-  width: 100vw;
-  min-width: 320px;
-  height: 100vh;
-  min-height: 320px;
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.test {
   background-color: #95c3ff;
+}
+
+.header {
+  height: 50px;
+  border: 1px solid black;
 }

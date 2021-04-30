@@ -1,11 +1,12 @@
-import { Reset } from 'styled-reset';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 const App = () => (
-  <>
-    <Reset />
-    <div className="App" />
-  </>
-
+  <div className="App">
+    <Header />
+    <main />
+    <Footer />
+  </div>
 );
 
 export default App;
