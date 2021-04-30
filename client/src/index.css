@@ -1,1 +1,7 @@
-
+.App {
+  width: 100vw;
+  min-width: 320px;
+  height: 100vh;
+  min-height: 320px;
+  background-color: #95c3ff;
+}
