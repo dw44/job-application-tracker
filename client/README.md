@@ -1,1 +1,0 @@
-- Craco used to override CRA's PostCSS configuration.
