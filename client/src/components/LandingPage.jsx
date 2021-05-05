@@ -1,32 +1,60 @@
 import styled from 'styled-components';
 
-import bg from '../assets/images/bg.svg';
+// import bg from '../assets/images/bg.svg';
 
-const LandingPageHeader = styled.header`
+const LandingpageContainer = styled.main`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const LandingPageNav = styled.nav`
   width: 100%;
   height: 5rem;
-  background-color: #000;
+  box-shadow: 0 4px 4px -4px gray;
   display: flex;
   padding: 1rem;
   justify-content: space-between;
 `;
 
-const LandingPageMain = styled.main`
-  width: 100%;
-  height: 100%;
+const SignupButtonContainer = styled.div`
+  margin: 10px;
+  display: inline-block;
+  width: 150px;
 `;
 
-const Hero = styled.div`
+const SignupButtonLink = styled.a`
   width: 100%;
-  height: 100%;
-  background: url(${bg});
-  border: 2px solid black;
+  text-align: center;
+  border: none;
+  background: #404040;
+  color: #ffffff !important;
+  font-weight: 100;
+  padding: 20px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  &:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+  }
 `;
 
 const LandingPage = () => (
-  <LandingPageMain>
-    <LandingPageHeader />
-    <Hero />
-  </LandingPageMain>
+  <LandingpageContainer>
+    <LandingPageNav>
+      <div>
+        <SignupButtonContainer><SignupButtonLink>Login</SignupButtonLink></SignupButtonContainer>
+        <SignupButtonContainer><SignupButtonLink>Sign Up</SignupButtonLink></SignupButtonContainer>
+      </div>
+    </LandingPageNav>
+  </LandingpageContainer>
 );
 export default LandingPage;
