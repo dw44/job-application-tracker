@@ -18,7 +18,7 @@ const LandingPageNav = styled.nav`
 `;
 
 const SignupButtonContainer = styled.div`
-  margin: 10px;
+  margin: 0 10px;
   display: inline-block;
   width: 150px;
 `;
@@ -27,9 +27,9 @@ const SignupButtonLink = styled.a`
   width: 100%;
   text-align: center;
   border: none;
-  background: #404040;
+  background: #eb4034;
   color: #ffffff !important;
-  font-weight: 100;
+  font-weight: bold;
   padding: 20px;
   text-transform: uppercase;
   border-radius: 6px;
@@ -37,7 +37,7 @@ const SignupButtonLink = styled.a`
   cursor: pointer;
   transition: all 0.3s ease 0s;
   &:hover {
-    color: #404040 !important;
+    color: #eb4034 !important;
     font-weight: 700 !important;
     letter-spacing: 3px;
     background: none;
