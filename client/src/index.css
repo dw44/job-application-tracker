@@ -1,8 +1,9 @@
+/* CSS reset */
 @import-normalize;
 
-*,
-*::before,
-*::after {
+.App *,
+.App *::before,
+.App *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
