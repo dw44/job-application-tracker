@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import styles from './AuthButton.module.css';
 
 function AuthButton({ label }) {

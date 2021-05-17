@@ -6,7 +6,15 @@ import Hamburger from '../Hamburger/Hamburger';
 export default function LandingPage() {
   return (
     <main className={styles.LandingPage}>
-      <AuthButton label="Sign Up" />
+      <header>
+        <nav className={styles.Navigation}>
+          <Hamburger />
+          <div>
+            <AuthButton label="Sign In" />
+            <AuthButton label="Sign Up" />
+          </div>
+        </nav>
+      </header>
       <section className={styles.LandingMain} />
     </main>
 
