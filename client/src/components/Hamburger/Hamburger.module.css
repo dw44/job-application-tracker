@@ -46,3 +46,10 @@ input[type="checkbox"]:checked ~ span:nth-of-type(3) {
   width: 50%;
   transform: translate(30px,-11px) rotatez(45deg);
 }
+/* responsive */
+@media screen and (min-width: 992px) {
+  label, 
+  label * {
+    display: none;
+  }
+}

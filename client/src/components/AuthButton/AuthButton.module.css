@@ -3,9 +3,9 @@
   -moz-appearance: none;
        appearance: none;
   background-color: transparent;
-  border: 2px solid #60b0f4;
+  border: none;
   border-radius: 0.3em;
-  color: #2255e0;
+  color: #000;
   cursor: pointer;
   display: -webkit-box;
   display: -webkit-flex;
@@ -17,15 +17,15 @@
   font-size: 1rem;
   font-weight: 400;
   line-height: 1;
-  margin: 20px;
+  margin: 0 10px 0 0;
   padding: 1.2em 2.8em;
   text-decoration: none;
   text-align: center;
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  background-image: -webkit-linear-gradient(45deg, #60b0f4 50%, transparent 50%);
-  background-image: linear-gradient(45deg, #60b0f4 50%, transparent 50%);
+  background-image: -webkit-linear-gradient(45deg, #000 50%, transparent 50%);
+  background-image: linear-gradient(45deg, #000 50%, transparent 50%);
   background-position: 100%;
   background-size: 400%;
   -webkit-transition: background 300ms ease-in-out;
@@ -42,4 +42,9 @@
 .AuthButton:hover {
   background-position: 0;
   color: #fff;
+  border: none;
+}
+
+@media screen and (min-width: 992px) {
+
 }
