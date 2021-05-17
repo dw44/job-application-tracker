@@ -1,10 +1,10 @@
 // import LandingPage from './components/LandingPage';
-import AuthButton from './components/AuthButton/AuthButton';
+import LandingPage from './components/LandingPage/LandingPage';
 
 function App() {
   return (
     <div className="App">
-      <AuthButton label="Test" />
+      <LandingPage />
     </div>
   );
 }
