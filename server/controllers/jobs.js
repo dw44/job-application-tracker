@@ -4,15 +4,7 @@ const jwt = require('jsonwebtoken');
 const Job = require('../models/Job');
 const User = require('../models/User');
 
-const getTokenFrom = (request) => {
-  // extract jwt from request header
-  const authorization = request.get('authorization');
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7);
-  }
-
-  return null;
-};
+const getTokenFrom = require('../utils/getToken');
 
 // returns true if token is valid, false otherwise
 const verifyToken = (token) => {

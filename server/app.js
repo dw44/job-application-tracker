@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use('/api/v1/jobs', require('./controllers/jobs'));
 
-app.use('/api/v1/users', require('./controllers/users'));
+app.use('/api/v1/users', require('./models/users'));
 
 app.use('/api/v1/login', require('./controllers/login'));
 

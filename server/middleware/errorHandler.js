@@ -7,7 +7,7 @@ const errorHandler = (error, request, response, next) => {
       message: error.message,
     });
   }
-  // added for 4.17
+  // jwt errors
   if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({
       statusCode: 401,
@@ -15,6 +15,7 @@ const errorHandler = (error, request, response, next) => {
       error: 'Invalid token',
     });
   }
+  // mongoose id casting errors
   if (error.name === 'CastError') {
     return response.status(400).json({
       statusCode: 400,
