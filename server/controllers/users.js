@@ -1,7 +1,7 @@
 const usersRouter = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('./User');
+const User = require('../models/User');
 
 // === GET all user ===
 usersRouter.get('/', async (request, response) => {

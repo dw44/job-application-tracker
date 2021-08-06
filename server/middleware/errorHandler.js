@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 // Add error handling for jwterror; casterror
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'ValidationError') {
