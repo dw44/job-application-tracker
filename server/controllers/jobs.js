@@ -10,20 +10,19 @@ const { getTokenFrom, verifyToken } = require('../utils/token');
 
 // ==========
 // retrieve jobs. Only retrieves jobs for logged in user
-jobsRouter.get('/', async (request, response) => {
+jobsRouter.get('/', async (request, response, next) => {
   // protected route. needs auth
   const token = getTokenFrom(request);
-
   // don't authorize if valid token not provided
   const verifiedToken = verifyToken(token);
 
-  if (!verifiedToken) {
-    return response.status(401).json({
-      statusCode: 401,
-      status: 'Unauthorized',
-      message: 'Invalid or missing token',
-    });
-  }
+  // if (!verifiedToken) {
+  //   return response.status(401).json({
+  //     statusCode: 401,
+  //     status: 'Unauthorized',
+  //     message: 'Invalid or missing token',
+  //   });
+  // }
 
   // auth passed. get user, and only the jobs created by the user
   const user = await User.findById(verifiedToken.id);
