@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -14,9 +15,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api/v1/jobs', require('./controllers/jobs'));
-
 app.use('/api/v1/users', require('./controllers/users'));
-
 app.use('/api/v1/login', require('./controllers/login'));
 
 app.use(errorHandler);

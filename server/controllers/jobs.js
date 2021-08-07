@@ -16,6 +16,7 @@ jobsRouter.get('/', async (request, response) => {
 
   // don't authorize if valid token not provided
   const verifiedToken = verifyToken(token);
+
   if (!verifiedToken) {
     return response.status(401).json({
       statusCode: 401,
@@ -24,19 +25,15 @@ jobsRouter.get('/', async (request, response) => {
     });
   }
 
-  try {
   // auth passed. get user, and only the jobs created by the user
-    const user = await User.findById(verifiedToken.id);
-    const jobs = await Job.find({ user: user._id });
+  const user = await User.findById(verifiedToken.id);
+  const jobs = await Job.find({ user: user._id });
 
-    response.status(201).json({
-      statusCode: 201,
-      status: 'Success',
-      jobs,
-    });
-  } catch (error) {
-    return response.status(500).json(error);
-  }
+  response.status(201).json({
+    statusCode: 201,
+    status: 'Success',
+    jobs,
+  });
 });
 
 // ==========
@@ -55,34 +52,30 @@ jobsRouter.post('/', async (request, response) => {
     });
   }
 
-  try {
-    // get user id from jwt
-    const user = await User.findById(verifiedToken.id);
+  // get user id from jwt
+  const user = await User.findById(verifiedToken.id);
 
-    const { body } = request;
-    const job = new Job({
-      title: body.title,
-      city: body.city,
-      company: body.company,
-      link: body.link,
-      notes: body.notes,
-      user: user._id,
-      status: body.status || 1,
-    });
+  const { body } = request;
+  const job = new Job({
+    title: body.title,
+    city: body.city,
+    company: body.company,
+    link: body.link,
+    notes: body.notes,
+    user: user._id,
+    status: body.status || 1,
+  });
 
-    const savedJob = await job.save();
-    // add job to user's jobs array and save user too
-    user.jobs = user.jobs.concat(savedJob._id);
-    await user.save();
+  const savedJob = await job.save();
+  // add job to user's jobs array and save user too
+  user.jobs = user.jobs.concat(savedJob._id);
+  await user.save();
 
-    return response.status(201).json({
-      statusCode: 201,
-      status: 'Success',
-      savedJob,
-    });
-  } catch (error) {
-    return response.status(500).json(error);
-  }
+  return response.status(201).json({
+    statusCode: 201,
+    status: 'Success',
+    savedJob,
+  });
 });
 
 // ==========
@@ -102,46 +95,42 @@ jobsRouter.put('/:id', async (request, response) => {
     });
   }
 
-  try {
-    const job = await Job.findById(id);
+  const job = await Job.findById(id);
 
-    if (!job) {
-      response.status(404).json({
-        statusCode: 404,
-        status: 'Not found',
-        message: 'Job application not found',
-      });
-    }
-
-    if (job.user.toString() !== verifiedToken.id) {
-      return response.status(401).json({
-        statusCode: 401,
-        status: 'Unathorized',
-        message: 'User not authorized to edit this job',
-      });
-    }
-
-    // reminder: send all values with req. don't use values from job fetched from db
-    const newJob = {
-      title: body.title,
-      city: body.city,
-      markedTrash: body.markedTrash,
-      company: body.company,
-      link: body.link,
-      notes: body.notes,
-      status: body.status,
-    };
-
-    const updatedJob = await Job.findByIdAndUpdate(id, newJob, { new: true });
-
-    response.status(202).json({
-      statusCode: 202,
-      status: 'Accepted',
-      updatedJob,
+  if (!job) {
+    response.status(404).json({
+      statusCode: 404,
+      status: 'Not found',
+      message: 'Job application not found',
     });
-  } catch (error) {
-    return response.status(500).json(error);
   }
+
+  if (job.user.toString() !== verifiedToken.id) {
+    return response.status(401).json({
+      statusCode: 401,
+      status: 'Unathorized',
+      message: 'User not authorized to edit this job',
+    });
+  }
+
+  // reminder: send all values with req. don't use values from job fetched from db
+  const newJob = {
+    title: body.title,
+    city: body.city,
+    markedTrash: body.markedTrash,
+    company: body.company,
+    link: body.link,
+    notes: body.notes,
+    status: body.status,
+  };
+
+  const updatedJob = await Job.findByIdAndUpdate(id, newJob, { new: true });
+
+  response.status(202).json({
+    statusCode: 202,
+    status: 'Accepted',
+    updatedJob,
+  });
 });
 
 module.exports = jobsRouter;
