@@ -72,6 +72,7 @@ jobsRouter.post('/', async (request, response) => {
 // ==========
 // edit job. Requires authorization.
 // ==========
+// TODO: block empty requests
 jobsRouter.put('/:id', async (request, response) => {
   const { body } = request;
   const { id } = request.params;
@@ -112,13 +113,13 @@ jobsRouter.put('/:id', async (request, response) => {
 
   // reminder: send all values with req. don't use values from job fetched from db
   const newJob = {
-    title: body.title,
-    city: body.city,
-    markedTrash: body.markedTrash,
-    company: body.company,
-    link: body.link,
-    notes: body.notes,
-    status: body.status,
+    title: body.title || job.title,
+    city: body.city || job.city,
+    markedTrash: body.markedTrash || job.markedTrash,
+    company: body.company || job.company,
+    link: body.link || job.link,
+    notes: body.notes || job.notes,
+    status: body.status || job.status,
   };
 
   const updatedJob = await Job.findByIdAndUpdate(id, newJob, { new: true });
