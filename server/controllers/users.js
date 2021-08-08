@@ -108,7 +108,7 @@ usersRouter.get('/forgot_password', async (request, response) => {
 });
 
 // step 2 of changing password via secret question.
-usersRouter.put('/:id', async (request, response, next) => {
+usersRouter.put('/:id', async (request, response) => {
   const { secretAnswer, newPassword } = request.body;
   const user = await User.findById(request.params.id);
 

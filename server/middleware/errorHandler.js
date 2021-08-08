@@ -13,7 +13,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(401).json({
       statusCode: 401,
       status: 'Unauthorized',
-      error: 'jwte',
+      error: 'JSON Web Token Error',
     });
   }
   // mongoose id casting errors

@@ -10,19 +10,11 @@ const { getTokenFrom, verifyToken } = require('../utils/token');
 
 // ==========
 // retrieve jobs. Only retrieves jobs for logged in user
-jobsRouter.get('/', async (request, response, next) => {
+jobsRouter.get('/', async (request, response) => {
   // protected route. needs auth
   const token = getTokenFrom(request);
   // don't authorize if valid token not provided
   const verifiedToken = verifyToken(token);
-
-  // if (!verifiedToken) {
-  //   return response.status(401).json({
-  //     statusCode: 401,
-  //     status: 'Unauthorized',
-  //     message: 'Invalid or missing token',
-  //   });
-  // }
 
   // auth passed. get user, and only the jobs created by the user
   const user = await User.findById(verifiedToken.id);
@@ -40,9 +32,9 @@ jobsRouter.get('/', async (request, response, next) => {
 jobsRouter.post('/', async (request, response) => {
   // protected route. needs auth
   const token = getTokenFrom(request);
-
   // don't authorize if valid token not provided
   const verifiedToken = verifyToken(token);
+
   if (!verifiedToken) {
     return response.status(401).json({
       statusCode: 401,
@@ -83,9 +75,12 @@ jobsRouter.post('/', async (request, response) => {
 jobsRouter.put('/:id', async (request, response) => {
   const { body } = request;
   const { id } = request.params;
+
   // token auth
   const token = getTokenFrom(request);
   const verifiedToken = verifyToken(token);
+
+  // auth failed. shut things down.
   if (!verifiedToken) {
     return response.status(401).json({
       statusCode: 401,
@@ -94,16 +89,19 @@ jobsRouter.put('/:id', async (request, response) => {
     });
   }
 
+  // auth passed. search db for job
   const job = await Job.findById(id);
 
+  // no job found. shut things down
   if (!job) {
-    response.status(404).json({
+    return response.status(404).json({
       statusCode: 404,
       status: 'Not found',
       message: 'Job application not found',
     });
   }
 
+  // job found, wrong user. this can't be allowed to happen. block via front end.
   if (job.user.toString() !== verifiedToken.id) {
     return response.status(401).json({
       statusCode: 401,
@@ -125,7 +123,7 @@ jobsRouter.put('/:id', async (request, response) => {
 
   const updatedJob = await Job.findByIdAndUpdate(id, newJob, { new: true });
 
-  response.status(202).json({
+  return response.status(202).json({
     statusCode: 202,
     status: 'Accepted',
     updatedJob,
