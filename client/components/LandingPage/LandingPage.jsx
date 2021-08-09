@@ -6,7 +6,6 @@ import Button from '../../styles/styled-components/Button';
 
 const Landing = styled.div`
   background-color: transparent;
-  border: 4px solid #FF4644;
   padding: 1rem;
   margin: 0 auto;
   height: 100%;
@@ -17,36 +16,6 @@ const Landing = styled.div`
   & * {
     font-family: ${(props) => props.theme.fonts.main};
   }
-
-
-
-  h1 {
-    font-size: 1.32rem;
-    font-weight: 800;
-    margin: 1rem;
-
-    @media only screen and (min-width: 480px) {
-      font-size: 2rem;
-    }
-    @media only screen and (min-width: 1024px) {
-      font-size: 3.2rem;
-    }
-  }
-
-  h2 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 1rem;
-    opacity: 0.8;
-
-    @media only screen and (min-width: 480px) {
-      font-size: 1.25rem;
-    }
-    @media only screen and (min-width: 1024px) {
-      font-size: 2rem;
-    }
-  }
-
 `;
 
 const Header = styled.header`
@@ -72,9 +41,65 @@ const Header = styled.header`
   }
 `;
 
-const LandingPageTextContainer = styled.div`
+const LandingPageContent = styled.div`
   width: 100%;
-  border: 2px solid red;
+
+  h1 {
+    font-size: 1.32rem;
+    font-weight: 800;
+    margin: 1rem;
+
+    @media only screen and (min-width: 480px) {
+      font-size: 2rem;
+    }
+    @media only screen and (min-width: 1024px) {
+      font-size: 3.2rem;
+    }
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 1rem;
+    opacity: 0.8;
+
+    @media only screen and (min-width: 480px) {
+      font-size: 1.25rem;
+    }
+    
+    @media only screen and (min-width: 1024px) {
+      font-size: 2rem;
+    }
+  }
+
+  h1, h2 {
+    @media only screen and (min-width: 640px) {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .demo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    
+    @media only screen and (min-width: 640px) {
+      margin-top: 1rem;
+      justify-content: center;
+    }
+
+    p {
+      opacity: 0.7;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      @media only screen and (min-width: 640px) {
+        margin-left: 1rem;
+        font-size: 1rem;
+      }
+    }
+  }
 `;
 
 export default function LandingPage() {
@@ -100,11 +125,14 @@ export default function LandingPage() {
         layout="intrinsic"
         alt="Job seeker going working on job applications and résumé"
       />
-      <LandingPageTextContainer>
+      <LandingPageContent>
         <h1>Job Application Tracker</h1>
         <h2>Track all your job applications through one simple app</h2>
-
-      </LandingPageTextContainer>
+        <div className="demo-container">
+          <Button>Demo</Button>
+          <p>&#40;No account or signup required&#41;</p>
+        </div>
+      </LandingPageContent>
     </Landing>
   );
 }
