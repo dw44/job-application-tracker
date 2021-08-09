@@ -1,15 +1,11 @@
 import styled from 'styled-components';
+
+import FullScreenContainer from '../styles/styled-components/FullScreenContainer';
 import LandingPage from '../components/LandingPage/LandingPage';
 
-const HomePage = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  border: 10px solid #000;
+const HomePage = styled(FullScreenContainer)`
+  background-color: ${(props) => props.theme.colors.mainBg};
+  font-family: ${(props) => props.theme.fonts.main};
 `;
 
 // This will serve as the landing page
