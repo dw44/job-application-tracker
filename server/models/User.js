@@ -3,11 +3,9 @@ const uniqueValidator = require('mongoose-unique-validator');
 // uniqueValidator added to validate username field
 
 const userSchema = new mongoose.Schema({
-  name: {
+  email: {
     type: String,
     required: true,
-    minLength: 3,
-    maxLength: 100,
   },
   username: {
     type: String,

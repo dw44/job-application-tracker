@@ -21,7 +21,7 @@ usersRouter.post('/', async (request, response) => {
   // return error if any fields are missing. Can't have missing fields here
   if (!body.username
       || !body.password
-      || !body.name
+      || !body.email
       || !body.secretQuestion
       || !body.secretAnswer) {
     return response.status(400).json({
@@ -31,22 +31,49 @@ usersRouter.post('/', async (request, response) => {
     });
   }
 
-  if (body.password.length < 3) {
+  if (body.password.length < 6) {
     // Can't have short password
     return response.status(400).json({
       statusCode: 400,
       status: 'Error',
-      message: 'Password must be at least 3 characters long',
+      message: 'Password must be at least 6 characters long',
     });
   }
 
-  // making sure that a preexisting username can't be registered again
-  const preExisting = await User.find({ username: body.username });
-  if (preExisting.length) {
+  if (body.username.trim().length < 3) {
     return response.status(400).json({
       statusCode: 400,
       status: 'Error',
-      message: 'Username Taken',
+      message: 'Username must be at least 3 characters long',
+    });
+  }
+
+  if (body.secretQuestion.trim().length < 5) {
+    return response.status(400).json({
+      statusCode: 400,
+      status: 'Error',
+      message: 'Secret Question must be at least 5 characters long',
+    });
+  }
+
+  if (body.secretAnswer.trim() === '') {
+    return response.status(400).json({
+      statusCode: 400,
+      status: 'Error',
+      message: 'Secret Answer cannot be empty',
+    });
+  }
+  // making sure that a preexisting username can't be registered again
+  const userNameExists = await User.find({ username: body.username });
+  const emailExists = await User.find({ email: body.email });
+
+  const preExisting = userNameExists.length > 0 || emailExists.length > 0;
+
+  if (preExisting) {
+    return response.status(400).json({
+      statusCode: 400,
+      status: 'Error',
+      message: 'Username or email already registered',
     });
   }
 
@@ -57,7 +84,7 @@ usersRouter.post('/', async (request, response) => {
 
   const user = new User({
     username: body.username,
-    name: body.name,
+    email: body.email,
     secretQuestion: body.secretQuestion,
     secretAnswerHash,
     passwordHash,

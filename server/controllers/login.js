@@ -26,7 +26,7 @@ loginRouter.post('/', async (request, response) => {
 
   const userForToken = {
     username: user.username,
-    name: user.name,
+    name: user.email,
     id: user._id.toString(),
   };
 
@@ -37,6 +37,7 @@ loginRouter.post('/', async (request, response) => {
     status: 'OK',
     message: `Logged in as ${user.username}`,
     token,
+    ...userForToken,
   });
 });
 
