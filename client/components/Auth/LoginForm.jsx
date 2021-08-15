@@ -1,9 +1,30 @@
-import styled from 'styled-components';
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import Head from 'next/head';
+import styled from 'styled-components';
 
 import Button from '../../styles/styled-components/Button';
 import Form from '../../styles/styled-components/Form';
 import FormGroup from '../../styles/styled-components/FormGroup';
+
+const BlockButton = styled(Button)`
+  display: block;
+  margin: 0 auto;
+`;
+
+const ForgotPassword = styled.a`
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  transition: text-decoration 0.8s;
+  width: auto;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default function LoginForm() {
   return (
@@ -21,8 +42,10 @@ export default function LoginForm() {
           <label htmlFor="username">Password</label>
           <input type="password" name="password" id="password" placeholder="Password" />
         </FormGroup>
-        <Button>Sign In</Button>
-        <a href="/">Forgot Password</a>
+        <BlockButton>Sign In</BlockButton>
+        <ForgotPassword href="/">
+          Forgot Password
+        </ForgotPassword>
       </Form>
     </Form>
   );

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+
 import LoginForm from '../components/Auth/LoginForm';
 import SignupForm from '../components/Auth/SignupForm';
 
@@ -48,15 +50,13 @@ const FormsContainer = styled.div`
       border: none;
       font-family: inherit;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      background-color: ${(props) => props.theme.colors.mainBg};
       color: ${(props) => props.theme.colors.textDark};
     }
     
     button:nth-of-type(1) {
       border-radius: 6px 0 0 6px;
-      background-color: blueviolet;
     }
 
     button:nth-of-type(2) {
@@ -66,15 +66,42 @@ const FormsContainer = styled.div`
 `;
 
 export default function Home() {
+  // 1 ==> Sign Up / New Account
+  // 2 ==> Sign In / Log In
+  const [nowDisplaying, setNowDisplaying] = useState(1);
+
+  const toggleDisplaying = (formType) => {
+    // formType = 1 for sign up/new acct, 2  for login/sign in
+    setNowDisplaying(formType);
+  };
+
   return (
     <PageContainer>
       <FormsContainer>
         <h1>Job Application Tracker</h1>
         <div className="form-type">
-          <button type="button">Create Account</button>
-          <button type="button">Sign In</button>
+          <button
+            type="button"
+            onClick={() => toggleDisplaying(1)}
+            style={{
+              backgroundColor: nowDisplaying === 1 ? '#FFF5C0' : '#FF4644',
+            }}
+          >
+            Create Account
+
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleDisplaying(2)}
+            style={{
+              backgroundColor: nowDisplaying === 2 ? '#FFF5C0' : '#FF4644',
+            }}
+          >
+            Sign In
+
+          </button>
         </div>
-        <LoginForm />
+        {nowDisplaying === 1 ? <SignupForm /> : <LoginForm />}
       </FormsContainer>
     </PageContainer>
   );
